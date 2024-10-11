@@ -8,7 +8,7 @@
 #include "../../navigation_system/include/navigation_system.h"
 #include "../../periphery_controller/include/periphery_controller.h"
 #include "../../logger/include/logger.h"
-#include "../../flight_controller/include/mission.h"
+#include "../../flight_controller/include/flight_controller.h"
 
 //Credential Manager
 TEST(CredentialManager, HexCharToInt) {

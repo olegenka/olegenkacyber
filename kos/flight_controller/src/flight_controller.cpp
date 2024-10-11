@@ -4,7 +4,7 @@
  * \~Russian \brief Реализация методов для работы с полетной миссией.
  */
 
-#include "../include/mission.h"
+#include "../include/flight_controller.h"
 #include "../../shared/include/ipc_messages_logger.h"
 
 #include <stdio.h>

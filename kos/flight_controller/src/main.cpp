@@ -4,7 +4,7 @@
  * \~Russian \brief Реализация основного цикла компонента FlightController модуля безопасности.
  */
 
-#include "../include/mission.h"
+#include "../include/flight_controller.h"
 #include "../../shared/include/initialization_interface.h"
 #include "../../shared/include/ipc_messages_initialization.h"
 #include "../../shared/include/ipc_messages_autopilot_connector.h"
