@@ -3,7 +3,9 @@ use drone_controller._
 
 @INIT_EXTERNAL_ENTITIES@
 
+use nonsecurity._
 /* Request messages */
+/*
 request {
     match src=Einit { grant () }
     match src=kl.core.Core { grant () }
@@ -36,8 +38,9 @@ request {
     match src=drone_controller.PeripheryController dst=kl.drivers.GPIO { grant () }
     match src=drone_controller.NavigationSystem dst=kl.drivers.I2C { grant () }
 }
-
+*/
 /* Response messages */
+/*
 response {
     match dst=Einit { grant () }
     match dst=kl.core.Core { grant () }
@@ -70,3 +73,22 @@ response {
     match dst=drone_controller.PeripheryController src=kl.drivers.GPIO { grant () }
     match dst=drone_controller.NavigationSystem src=kl.drivers.I2C { grant () }
 }
+*/
+audit profile trace = {
+    /* Complete silence. */
+    0: {},
+    /* Only denied by kss. */
+    1: {
+        base: { kss: [ "granted" ] },
+    },
+    /* Only denied from everyone. */
+    2: {
+        base: { kss: [ "denied" ] },
+    },
+    /* All listening. */
+    3: {
+        base: { kss: [ "granted", "denied" ] },
+    }
+}
+/* We assign the level of the audit profile used by default. */
+audit default = trace 2

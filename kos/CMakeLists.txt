@@ -36,6 +36,7 @@ if (NOT SIMULATION)
     if (SERVER)
         find_package (wpa REQUIRED COMPONENTS SUPPLICANT_ENTITY)
         include_directories (${wpa_INCLUDE})
+        find_package (dnet_brcmfmac REQUIRED)
     endif ()
 endif ()
 

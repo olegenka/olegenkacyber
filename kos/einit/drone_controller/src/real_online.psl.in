@@ -3,7 +3,9 @@ use drone_controller._
 
 @INIT_EXTERNAL_ENTITIES@
 
+use nonsecurity._
 /* Request messages */
+/*
 request {
     match src=Einit { grant () }
     match src=kl.core.Core { grant () }
@@ -40,8 +42,9 @@ request {
     match src=drone_controller.PeripheryController dst=kl.drivers.GPIO { grant () }
     match src=drone_controller.NavigationSystem dst=kl.drivers.I2C { grant () }
 }
-
+*/
 /* Response messages */
+/*
 response {
     match dst=Einit { grant () }
     match dst=kl.core.Core { grant () }
@@ -78,3 +81,4 @@ response {
     match dst=drone_controller.PeripheryController src=kl.drivers.GPIO { grant () }
     match dst=drone_controller.NavigationSystem src=kl.drivers.I2C { grant () }
 }
+*/

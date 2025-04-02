@@ -13,8 +13,11 @@ use EDL drone_controller.ServerConnector
 use EDL drone_controller.Logger
 use EDL drone_controller.KlogEntity
 use EDL drone_controller.KlogStorageEntity
+use EDL kl.drivers.UART
+use EDL wpa.WpaSupplicant
 
 /* Execution of entities */
+/*
 execute {
     match src=Einit { grant () }
     match src=kl.core.Core { grant () }
@@ -26,8 +29,9 @@ execute {
     match src=drone_controller.ServerConnector { grant () }
     match src=drone_controller.Logger { grant () }
 }
-
+*/
 /* Request messages */
+/*
 request {
     match interface=drone_controller.Initialization method=WaitForInit { grant () }
 
@@ -62,8 +66,9 @@ request {
    match src=kl.core.Core dst=drone_controller.KlogEntity { grant() }
    match src=kl.core.Core dst=drone_controller.KlogStorageEntity { grant() }
 }
-
+*/
 /* Response messages */
+/*
 response {
     match interface=drone_controller.Initialization method=WaitForInit { grant () }
 
@@ -98,7 +103,7 @@ response {
    match dst=kl.core.Core src=drone_controller.KlogEntity { grant() }
    match dst=kl.core.Core src=drone_controller.KlogStorageEntity { grant() }
 }
-
+*/
 /* Error calls */
 error {
     grant ()
