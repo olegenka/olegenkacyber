@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=your-project-key
-            -Dsonar.organization=your-org-name
+            -Dsonar.projectKey=sqp_cf3847d0dcfd597605e7ae0adf9c72ac895346b1
+            -Dsonar.organization=drone
             -Dsonar.sources=.
             -Dsonar.host.url=https://sonarcloud.io
