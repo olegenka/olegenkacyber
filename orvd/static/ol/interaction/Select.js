@@ -464,7 +464,7 @@ class Select extends Interaction {
    */
   handleEvent(mapBrowserEvent) {
     if (!this.condition_(mapBrowserEvent)) {
-      return true;
+      return false;
     }
     const add = this.addCondition_(mapBrowserEvent);
     const remove = this.removeCondition_(mapBrowserEvent);
