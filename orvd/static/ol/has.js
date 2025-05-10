@@ -81,8 +81,8 @@ export const PASSIVE_EVENT_LISTENERS = (function () {
   try {
     const options = Object.defineProperty({}, 'passive', {
       get: function () {
-        passive = true;
-      },
+        return passive;
+      }
     });
 
     // @ts-ignore Ignore invalid event type '_'
