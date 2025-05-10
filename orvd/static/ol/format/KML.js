@@ -3082,9 +3082,9 @@ function writePlacemark(node, feature, objectStack) {
   };
   filter[feature.getGeometryName()] = 1;
   const keys = Object.keys(properties || {})
-    .sort()
+    .sort((a, b) => a.localeCompare(b))
     .filter(function (v) {
-      return !filter[v];
+        return !filter[v];
     });
 
   const styleFunction = feature.getStyleFunction();
