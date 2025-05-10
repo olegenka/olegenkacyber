@@ -1559,10 +1559,8 @@ def export_forbidden_zones():
     token = request.args.get('token')
     if token is None or not check_user_token(token):
         return jsonify({"error": "Unauthorized"}), 401
-
-    return send_file(FORBIDDEN_ZONES_PATH, as_attachment=True, attachment_filename='forbidden_zones.json')
-
-
+    return send_file(FORBIDDEN_ZONES_PATH, as_attachment=True, download_name='forbidden_zones.json')
+    
 @bp.route('/admin/import_forbidden_zones', methods=['POST'])
 def import_forbidden_zones():
     """
