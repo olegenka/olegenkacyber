@@ -179,7 +179,7 @@ class RBush {
         return result;
       }
     }
-    return result;
+    return false;
   }
 
   /**
