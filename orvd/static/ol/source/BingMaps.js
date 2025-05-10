@@ -320,8 +320,8 @@ class BingMaps extends TileImage {
               }
             }
           }
-          if (intersecting) {
-            attributions.push(imageryProvider.attribution);
+          return intersecting;
+          
           }
         });
 
