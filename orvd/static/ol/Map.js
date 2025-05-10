@@ -494,11 +494,19 @@ class Map extends BaseObject {
     // is "defined" already.
     this.setProperties(optionsInternal.values);
 
+    
     const map = this;
-    if (options.view && !(options.view instanceof View)) {
-      options.view.then(function (viewOptions) {
-        map.setView(new View(viewOptions));
-      });
+    if (options.view) {
+    if (options.view instanceof View) {
+        map.setView(options.view);
+    } else {
+        // Перемещаем асинхронную операцию за пределы конструктора
+        Promise.resolve().then(() => {
+            return options.view;
+        }).then(viewOptions => {
+            map.setView(new View(viewOptions));
+        });
+      }
     }
 
     this.controls.addEventListener(
