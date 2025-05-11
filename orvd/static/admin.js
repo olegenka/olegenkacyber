@@ -2,7 +2,7 @@ const TILES_URL = "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}";
 const TILES_LOCAL_PATH = "static/resources/tiles";
 
 function getSearchParameters() {
-  var prmstr = window.location.search.substr(1);
+  const prmstr = window.location.search.substr(1);
   return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
 }
 
@@ -40,7 +40,7 @@ let active_id = null;
 let current_mission = null;
 let uav = null;
 let access_token = params.token;
-var current_state = null;
+let current_state = null;
 let forbidden_zones_display = false;
 
 async function copyToClipboard(textToCopy) {
@@ -221,7 +221,7 @@ async function createGeoJSONLayer() {
   map.addLayer(geoJSONLayer);
 }
 
-var markers = new ol.layer.Vector({
+const markers = new ol.layer.Vector({
   source: new ol.source.Vector(),
 });
 
@@ -270,7 +270,7 @@ map.getTargetElement().addEventListener('pointerleave', function () {
 
 
 function clear_markers() {
-  var features = markers.getSource().getFeatures();
+  const features = markers.getSource().getFeatures();
     features.forEach((feature) => {
       const feature_id = feature.getId();
       if(feature_id === undefined || !feature.getId().includes('uav')) {
@@ -282,12 +282,12 @@ function clear_markers() {
 function add_marker(lat, lon, alt, marker_type) {
   if (marker_type == 'uav') {
     uav = new ol.Feature(new ol.geom.Point([lon, lat]));
-    uav.setId('uav')
+    const uav.setId('uav')
     uav.setStyle(uav_style);
     uav.set('description', 'Высота: ' + alt);
     markers.getSource().addFeature(uav);
   } else {
-    var marker = new ol.Feature(new ol.geom.Point([lon, lat]));
+    const marker = new ol.Feature(new ol.geom.Point([lon, lat]));
     if (marker_type == 'home') {
       marker.setStyle(home_marker_style);
       marker.set('description', 'Высота: ' + alt);
@@ -306,8 +306,8 @@ function add_marker(lat, lon, alt, marker_type) {
 }
 
 function add_polyline(line_path) {
-  var polyline = new ol.geom.MultiLineString([line_path]);
-  var polyline_feature = new ol.Feature({
+  const polyline = new ol.geom.MultiLineString([line_path]);
+  const polyline_feature = new ol.Feature({
       name: "Thing",
       geometry: polyline,
       description: null
