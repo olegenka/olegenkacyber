@@ -305,7 +305,7 @@ class BingMaps extends TileImage {
           z,
         );
         const zoom = tileCoord[0];
-        resource.imageryProviders.map(function (imageryProvider) {
+        resource.imageryProviders.forEach(function (imageryProvider) {
           let intersecting = false;
           const coverageAreas = imageryProvider.coverageAreas;
           for (let i = 0, ii = coverageAreas.length; i < ii; ++i) {
