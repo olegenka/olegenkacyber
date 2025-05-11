@@ -6,17 +6,17 @@ function getSearchParameters() {
   return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
 }
 
-function transformToAssocArray( prmstr ) {
-  var params = {};
-  var prmarr = prmstr.split("&");
-  for ( var i = 0; i < prmarr.length; i++) {
-      var tmparr = prmarr[i].split("=");
+function transformToAssocArray(prmstr) {
+  const params = {};
+  const prmarr = prmstr.split("&");
+  for (let i = 0; i < prmarr.length; i++) {
+      const tmparr = prmarr[i].split("=");
       params[tmparr[0]] = tmparr[1];
   }
   return params;
 }
 
-var params = getSearchParameters();
+const params = getSearchParameters();
 
 document.getElementById('arm').onclick = arm;
 document.getElementById('disarm').onclick = disarm;
