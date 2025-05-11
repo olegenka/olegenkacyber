@@ -3,6 +3,10 @@ from utils.api_handlers import *
 
 bp = Blueprint('main', __name__)
 
+ERROR_INVALID_ID_DECISION = 'Wrong id/decision'
+ERROR_INVALID_ID = 'Wrong id'
+ERROR_INVALID_NAME = 'Wrong name'
+
 @bp.route('/')
 def index():
     """
@@ -180,8 +184,7 @@ def arm_decision():
         return authorized_request(handler_func=arm_decision_handler, token=token,
                        id=id, decision=decision)
     else:
-        return bad_request('Wrong id/decision')
-
+        return bad_request(ERROR_INVALID_ID_DECISION)
 
 @bp.route('/admin/mission_decision')
 def mission_decision():
@@ -226,7 +229,7 @@ def mission_decision():
         return authorized_request(handler_func=mission_decision_handler, token=token,
                        id=id, decision=decision)
     else:
-        return bad_request('Wrong id/decision')
+        return bad_request(ERROR_INVALID_ID_DECISION)
 
 
 @bp.route('/admin/force_disarm')
@@ -628,7 +631,7 @@ def change_fly_accept():
         return authorized_request(handler_func=change_fly_accept_handler, token=token,
                        id=id, decision=decision)
     else:
-        return bad_request('Wrong id/decision')
+        return bad_request(ERROR_INVALID_ID_DECISION)
       
 
 @bp.route('/admin/get_forbidden_zones')
