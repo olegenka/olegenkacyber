@@ -181,18 +181,11 @@ class BingMaps extends TileImage {
       '&c=' +
       this.culture_;
 
-    this.loadMetadata_(url);
-  }
-
-  /**
-   * @private
-   * @param {string} url URL для загрузки метаданных.
-   */
-  loadMetadata_(url) {
     fetch(url)
       .then((response) => response.json())
       .then((json) => this.handleImageryMetadataResponse(json));
   }
+
   /**
    * Get the api key used for this source.
    *
@@ -327,9 +320,9 @@ class BingMaps extends TileImage {
               }
             }
           }
-          return intersecting;
-          
-          
+          if (intersecting) {
+            attributions.push(imageryProvider.attribution);
+          }
         });
 
         attributions.push(TOS_ATTRIBUTION);
