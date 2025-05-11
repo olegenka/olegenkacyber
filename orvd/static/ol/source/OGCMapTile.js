@@ -60,14 +60,27 @@ class OGCMapTile extends TileImage {
       transition: options.transition,
     });
 
-    const sourceInfo = {
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.sourceInfo_ = {
       url: options.url,
       projection: this.getProjection(),
       mediaType: options.mediaType,
       context: options.context || null,
     };
 
-    getTileSetInfo(sourceInfo)
+     // Инициализируем источник после конструктора
+    this.initialize_();
+  }
+
+  /**
+   * Initialize the OGC Map Tile source
+   * @private
+   */
+  initialize_() {
+    getTileSetInfo(this.sourceInfo_)
       .then(this.handleTileSetInfo_.bind(this))
       .catch(this.handleError_.bind(this));
   }
