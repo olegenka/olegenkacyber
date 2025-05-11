@@ -167,33 +167,15 @@ class Google extends TileImage {
      */
     this.previousViewportExtent_;
 
+    this.initialize_();
+  }
+
+  * Initialize the Google Maps source
+   * @private
+   */
+  initialize_() {
+    // Запускаем создание сессии
     this.createSession_();
-  }
-
-  /**
-   * @return {Error|null} A source loading error. When the source state is `error`, use this function
-   * to get more information about the error. To debug a faulty configuration, you may want to use
-   * a listener like
-   * ```js
-   * source.on('change', () => {
-   *   if (source.getState() === 'error') {
-   *     console.error(source.getError());
-   *   }
-   * });
-   * ```
-   */
-  getError() {
-    return this.error_;
-  }
-
-  /**
-   * Exposed here so it can be overridden in the tests.
-   * @param {string} url The URL.
-   * @param {RequestInit} config The config.
-   * @return {Promise<Response>} A promise that resolves with the response.
-   */
-  fetchSessionToken(url, config) {
-    return fetch(url, config);
   }
 
   /**
