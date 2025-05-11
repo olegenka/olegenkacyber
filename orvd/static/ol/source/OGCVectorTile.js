@@ -65,7 +65,11 @@ class OGCVectorTile extends VectorTileSource {
       state: 'loading',
     });
 
-    const sourceInfo = {
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.sourceInfo_ = {
       url: options.url,
       projection: this.getProjection(),
       mediaType: options.mediaType,
@@ -73,7 +77,16 @@ class OGCVectorTile extends VectorTileSource {
       context: options.context || null,
     };
 
-    getTileSetInfo(sourceInfo)
+    // Инициализируем источник после конструктора
+    this.initialize_();
+  }
+
+  /**
+   * Initialize the OGC Vector Tile source
+   * @private
+   */
+  initialize_() {
+    getTileSetInfo(this.sourceInfo_)
       .then(this.handleTileSetInfo_.bind(this))
       .catch(this.handleError_.bind(this));
   }
