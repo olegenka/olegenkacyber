@@ -329,7 +329,7 @@ class BingMaps extends TileImage {
           }
           return intersecting;
           
-          }
+          
         });
 
         attributions.push(TOS_ATTRIBUTION);
