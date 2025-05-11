@@ -172,7 +172,14 @@ class BingMaps extends TileImage {
      * @type {boolean|undefined}
      */
     this.placeholderTiles_ = options.placeholderTiles;
+     this.initializeSource();
+  }
 
+  /**
+   * Initialize the Bing Maps source by fetching metadata
+   * @private
+   */
+  initializeSource() {
     const url =
       'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/' +
       this.imagerySet_ +
@@ -183,7 +190,11 @@ class BingMaps extends TileImage {
 
     fetch(url)
       .then((response) => response.json())
-      .then((json) => this.handleImageryMetadataResponse(json));
+      .then((json) => this.handleImageryMetadataResponse(json))
+      .catch((error) => {
+        console.error('Error fetching Bing Maps metadata:', error);
+        this.setState('error');
+      });
   }
 
   /**
