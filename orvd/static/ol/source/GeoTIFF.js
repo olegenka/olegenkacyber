@@ -466,22 +466,29 @@ class GeoTIFFSource extends DataTile {
 
     this.setKey(this.sourceInfo_.map((source) => source.url).join(','));
 
-    const self = this;
-    const requests = new Array(numSources);
-    for (let i = 0; i < numSources; ++i) {
+    this.initialize_();
+  }
+
+  /**
+   * Initialize the source by loading and configuring GeoTIFF images
+   * @private
+   */
+  initialize_() {
+    const requests = new Array(this.sourceInfo_.length);
+    for (let i = 0; i < this.sourceInfo_.length; ++i) {
       requests[i] = getImagesForSource(
         this.sourceInfo_[i],
         this.sourceOptions_,
       );
     }
     Promise.all(requests)
-      .then(function (sources) {
-        self.configure_(sources);
+      .then((sources) => {
+        this.configure_(sources);
       })
-      .catch(function (error) {
+      .catch((error) => {
         logError(error);
-        self.error_ = error;
-        self.setState('error');
+        this.error_ = error;
+        this.setState('error');
       });
   }
 
