@@ -55,7 +55,21 @@ def create_app():
     
     return app
 
-from utils.api_handlers import *
+# Заменяем wildcard import на конкретные импорты
+from utils.api_handlers import (
+    telemetry_handler,
+    fmission_ms_handler,
+    clean_db,
+    generate_user,
+    UavTelemetry,
+    MissionStep,
+    Mission,
+    MissionSenderPublicKeys,
+    UavPublicKeys,
+    Uav,
+    User,
+    regular_request
+)
 
 def clean_app_db(app):
     with app.app_context():
