@@ -143,7 +143,7 @@ class Tile extends EventTarget {
    * Called by the tile cache when the tile is removed from the cache due to expiry
    */
   release() {
-    if (this.state === TileState.ERROR) {
+    if (this.state == TileState.ERROR) {
       // to remove the `change` listener on this tile in `ol/TileQueue#handleTileChange`
       this.setState(TileState.EMPTY);
     }
@@ -247,7 +247,7 @@ class Tile extends EventTarget {
    * @api
    */
   setState(state) {
-    if (this.state !== TileState.ERROR && this.state > state) {
+    if (this.state != TileState.ERROR && this.state > state) {
       throw new Error('Tile load sequence violation');
     }
     this.state = state;
