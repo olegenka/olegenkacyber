@@ -1153,7 +1153,7 @@ class Map extends BaseObject {
       for (let i = interactionsArray.length - 1; i >= 0; i--) {
         const interaction = interactionsArray[i];
         if (
-          interaction.getMap() !== this ||
+          interaction.getMap() != this ||
           !interaction.getActive() ||
           !this.getTargetElement()
         ) {
