@@ -13,11 +13,10 @@
  */
 export function flipXY(flatCoordinates, offset, end, stride, dest, destOffset) {
   if (dest !== undefined) {
-    dest = dest;
-    destOffset = destOffset !== undefined ? destOffset : 0;
+    destOffset = destOffset;
   } else {
-    dest = [];
-    destOffset = 0;
+    dest = coordinates;
+    destOffset = offset;
   }
   let j = offset;
   while (j < end) {
