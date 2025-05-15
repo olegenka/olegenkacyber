@@ -12,10 +12,8 @@
  * @return {Array<number>} Flat coordinates.
  */
 export function flipXY(flatCoordinates, offset, end, stride, dest, destOffset) {
-  if (dest !== undefined) {
-    destOffset = destOffset;
-  } else {
-    dest = coordinates;
+  if (dest === undefined) {
+    dest = flatCoordinates;
     destOffset = offset;
   }
   let j = offset;
