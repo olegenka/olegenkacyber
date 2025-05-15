@@ -1044,7 +1044,7 @@ class Executor {
               cachedWidths,
               viewRotationFromTransform ? 0 : this.viewRotation_,
             );
-            drawChars: if (parts) {
+            if (parts) {
               /** @type {Array<ReplayImageOrLabelArgs>} */
               const replayImageOrLabelArgs = [];
               let c, cc, chars, label, part;
