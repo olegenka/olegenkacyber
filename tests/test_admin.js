@@ -52,7 +52,7 @@ describe('Admin Panel Functions', () => {
         };
         const src = 'https://mt1.google.com/vt/lyrs=y&x=1&y=2&z=3';
         
-        availableTiles = ['3/1/2'];
+        let availableTiles = ['3/1/2'];
         customTileLoadFunction(imageTile, src);
         expect(imageTile.getImage().src).toBe('static/resources/tiles/3/1/2.png');
     });
