@@ -41,7 +41,7 @@ describe('Admin Panel Functions', () => {
         };
         global.navigator.clipboard = mockClipboard;
         
-        active_id = 'test123';
+        let active_id = 'test123';
         await copy_current_id();
         expect(mockClipboard.writeText).toHaveBeenCalledWith('test123');
     });
