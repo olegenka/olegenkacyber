@@ -152,7 +152,7 @@ export function replaceChildren(node, children) {
     // check if an old child needs to be removed
     if (!newChild) {
       node.removeChild(oldChild);
-      --i;
+      
       continue;
     }
 
