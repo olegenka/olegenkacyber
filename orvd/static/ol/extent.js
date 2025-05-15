@@ -745,7 +745,7 @@ export function intersectsSegment(extent, start, end) {
   const startRel = coordinateRelationship(extent, start);
   const endRel = coordinateRelationship(extent, end);
   if (
-    startRel === Relationship.INTERSECTING ||
+    startRel == Relationship.INTERSECTING ||
     endRel == Relationship.INTERSECTING
   ) {
     intersects = true;
