@@ -9,32 +9,29 @@ jobs:
   sonarqube:
     runs-on: ubuntu-latest
     steps:
-      # Шаг 1: Получение кода
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+
+      # Шаг 1: Патчинг CMakeLists.txt
+      - name: Patch CMake for Sonar
+        run: |
+          sed -i 's/include (platform)/#include (platform)/' kos/CMakeLists.txt
+          sed -i 's/initialize_platform/#initialize_platform/' kos/CMakeLists.txt
 
       # Шаг 2: Установка CMake
       - name: Install CMake
         run: sudo apt-get update && sudo apt-get install -y cmake
 
-      # Шаг 3: Генерация compile_commands.json 
-      - name: Generate Compilation Database
+      # Шаг 3: Генерация compile_commands.json
+      - name: Generate Compilation DB
         run: |
           mkdir -p kos/build
           cd kos/build
           cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
           cp compile_commands.json ../../
 
-      # Шаг 4: Проверка структуры
-      - name: Verify Files
-        run: |
-          ls -la
-          test -f compile_commands.json || exit 1
-
-      # Шаг 5: Анализ SonarQube
+      # Шаг 4: Анализ SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_BASE_DIR: ${{ github.workspace }}
+          SONAR_CXX_COMPILE_COMMANDS: compile_commands.json
