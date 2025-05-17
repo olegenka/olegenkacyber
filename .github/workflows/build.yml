@@ -7,7 +7,7 @@ on:
 
 jobs:
   sonarqube:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Явно указываем версию
     steps:
       - uses: actions/checkout@v4
 
@@ -19,8 +19,8 @@ jobs:
       - name: Add KasperskyOS repo
         run: |
           sudo mkdir -p /etc/apt/keyrings
-          curl -fsSL https://cdn.kaspersky.com/secure.apt.kaspersky.com/Repository.key | sudo gpg --dearmor -o /etc/apt/keyrings/kaspersky.gpg
-          echo "deb [signed-by=/etc/apt/keyrings/kaspersky.gpg] https://cdn.kaspersky.com/secure.apt.kaspersky.com/kos/1.3.0.166_ru/raspberrypi4b/ ./" | sudo tee /etc/apt/sources.list.d/kos.list
+          curl -fsSL https://download.kaspersky.com/devices/KasperskyOS/kos-deb.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/kaspersky.gpg
+          echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/kaspersky.gpg] https://download.kaspersky.com/devices/KasperskyOS/1.3.0.166/ubuntu/22.04 stable main" | sudo tee /etc/apt/sources.list.d/kos.list
           sudo apt-get update
 
       - name: Install KasperskyOS
