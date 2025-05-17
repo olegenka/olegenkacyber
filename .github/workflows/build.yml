@@ -1,29 +1,21 @@
-name: SonarQube Analysis
-on:
-  push:
-    branches: [main]
-  pull_request:
-    types: [opened, synchronize, reopened]
-
 jobs:
   sonarqube:
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-    
+      # Установка Bear
+      - name: Install Bear
+        run: sudo apt-get install -y bear
 
-      # Шаг 3: Генерация compile_commands.json
+      # Генерация compile_commands.json
       - name: Generate Compilation DB
         run: |
-          mkdir -p kos/build
-          cd kos/build
-          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
-          cp compile_commands.json ../../
+          cd kos
+          bear -- make  # Замените 'make' на вашу команду сборки
 
-      # Шаг 4: Анализ SonarQube
+      # Анализ SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_CXX_COMPILE_COMMANDS: compile_commands.json
+          SONAR_CXX_COMPILE_COMMANDS: kos/compile_commands.json
