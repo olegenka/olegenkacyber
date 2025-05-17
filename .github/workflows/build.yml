@@ -14,25 +14,29 @@ jobs:
       # Шаг 1: Получение кода
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Полный clone для анализа истории
+          fetch-depth: 0
 
-      # Шаг 2: Установка Build Wrapper (обязательно для C/C++)
+      # Шаг 2: Установка Build Wrapper
       - name: Install Build Wrapper
         run: |
           wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
           echo "$PWD/build-wrapper-linux-x86" >> $GITHUB_PATH
 
-      # Шаг 3: Сборка проекта с Build Wrapper
-      - name: Build with Wrapper
+      # Шаг 3: Сборка через Makefile
+      - name: Build with Make
         run: |
-          mkdir build
-          cd build
-          build-wrapper-linux-x86-64 --out-dir ../bw_output cmake ..
-          cmake --build .
-      # Шаг 4: Запуск SonarQube анализа
+          build-wrapper-linux-x86-64 --out-dir bw_output make all
+
+      # Шаг 4: Проверка результатов сборки
+      - name: Verify Build Output
+        run: |
+          ls -la bw_output
+          test -f bw_output/build-wrapper-dump.json || exit 1
+
+      # Шаг 5: Анализ SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Для интеграции с GitHub
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
