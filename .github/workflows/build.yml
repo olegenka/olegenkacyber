@@ -26,8 +26,10 @@ jobs:
       # Шаг 3: Сборка проекта с Build Wrapper
       - name: Build with Wrapper
         run: |
-          build-wrapper-linux-x86-64 --out-dir bw_output make all  # Замените make на ваш билд-команд (cmake, etc.)
-
+          mkdir build
+          cd build
+          build-wrapper-linux-x86-64 --out-dir ../bw_output cmake ..
+          cmake --build .
       # Шаг 4: Запуск SonarQube анализа
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
