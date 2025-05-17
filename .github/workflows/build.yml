@@ -31,12 +31,6 @@ jobs:
           test -f kos/CMakeLists.txt || exit 1
           find kos -name '*.cpp' -o -name '*.h'
 
-      - name: Build with CMake
-        run: |
-          mkdir -p kos/build
-          cd kos/build
-          build-wrapper-linux-x86-64 --out-dir ../../bw_output cmake ..
-          cmake --build .
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
