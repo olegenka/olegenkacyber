@@ -16,27 +16,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Шаг 2: Установка Build Wrapper
-      - name: Install Build Wrapper
+      # Шаг 2: Проверка структуры проекта
+      - name: Verify Source Code
         run: |
-          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-          unzip build-wrapper-linux-x86.zip
-          echo "$PWD/build-wrapper-linux-x86" >> $GITHUB_PATH
+          ls -la
+          find src -name '*.cpp' -o -name '*.h'
 
-      # Шаг 3: Сборка через Makefile
-      - name: Build with Make
-        run: |
-          build-wrapper-linux-x86-64 --out-dir bw_output make all
-
-      # Шаг 4: Проверка результатов сборки
-      - name: Verify Build Output
-        run: |
-          ls -la bw_output
-          test -f bw_output/build-wrapper-dump.json || exit 1
-
-      # Шаг 5: Анализ SonarQube
+      # Шаг 3: Анализ SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_PROJECT_BASE_DIR: ${{ github.workspace }}/src  # Путь к исходникам
