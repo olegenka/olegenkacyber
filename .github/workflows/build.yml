@@ -20,7 +20,7 @@ jobs:
       # Загрузка KasperskyOS SDK
       - name: Download KasperskyOS SDK
         run: |
-          curl -fsSL -o kos-sdk.deb "https://github.com/olegenkaorg/olegenkacyber/releases/download/KoS/KasperskyOS-Community-Edition-RaspberryPi4b-1.3.0.166_ru.deb"
+          curl -fsSL -o kos-sdk.deb "https://github.com/olegenkaorg/olegenkacyber/releases/download/v1.0/KasperskyOS-Community-Edition-RaspberryPi4b-1.3.0.166_ru.deb"
           sudo dpkg -i kos-sdk.deb
           echo "KOS_SDK=/opt/kasperskyos-community-edition-1.3.0.166" >> $GITHUB_ENV
 
