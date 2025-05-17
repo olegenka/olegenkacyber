@@ -2,14 +2,7 @@ cmake_minimum_required (VERSION 3.12)
 
 project (DroneController)
 
-include (platform)
-initialize_platform (FORCE_STATIC)
-if (PLATFORM_SUPPORTS_DYNAMIC_LINKING)
-    message (FATAL_ERROR "The solution only supports static libraries")
-endif ()
 
-include (platform/nk)
-include (platform/install)
 
 set (RESOURCES ${CMAKE_SOURCE_DIR}/resources)
 
