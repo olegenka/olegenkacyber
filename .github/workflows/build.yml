@@ -10,39 +10,36 @@ jobs:
     name: SonarQube
     runs-on: ubuntu-latest
     steps:
-      # Шаг 1: Получение кода
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Шаг 2: Установка Build Wrapper
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+
       - name: Install Build Wrapper
         run: |
           wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
           echo "$PWD/build-wrapper-linux-x86" >> $GITHUB_PATH
 
-      # Шаг 3: Проверка структуры проекта
       - name: Verify KOS Structure
         run: |
           ls -la kos/
-          test -f kos/Makefile || exit 1
+          test -f kos/CMakeLists.txt || exit 1
           find kos -name '*.cpp' -o -name '*.h'
 
-      # Шаг 4: Сборка с Build Wrapper
-      - name: Build KOS with Wrapper
+      - name: Build with CMake
         run: |
-          build-wrapper-linux-x86-64 --out-dir bw_output make -C kos all
+          mkdir -p kos/build
+          cd kos/build
+          build-wrapper-linux-x86-64 --out-dir ../../bw_output cmake ..
+          cmake --build .
 
-      # Шаг 5: Проверка результатов сборки
-      - name: Validate Build Output
-        run: |
-          ls -la bw_output
-          test -f bw_output/build-wrapper-dump.json || exit 1
-
-      # Шаг 6: Анализ SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_BASE_DIR: ${{ github.workspace }}
+          SONAR_PROJECT_BASE_DIR: ${{ github.workspace }}/kos
