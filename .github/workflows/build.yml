@@ -7,34 +7,49 @@ on:
 
 jobs:
   sonarqube:
-    runs-on: ubuntu-22.04  # Явно указываем версию
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
+      # Установка зависимостей
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential curl
 
-      - name: Add KasperskyOS repo
+      # Загрузка KasperskyOS SDK
+      - name: Download KasperskyOS SDK
         run: |
-          sudo mkdir -p /etc/apt/keyrings
-          curl -fsSL https://download.kaspersky.com/devices/KasperskyOS/kos-deb.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/kaspersky.gpg
-          echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/kaspersky.gpg] https://download.kaspersky.com/devices/KasperskyOS/1.3.0.166/ubuntu/22.04 stable main" | sudo tee /etc/apt/sources.list.d/kos.list
-          sudo apt-get update
-
-      - name: Install KasperskyOS
-        run: |
-          sudo apt-get install -y kos-community-edition
+          curl -fsSL -o kos-sdk.deb "https://example.com/path/to/KasperskyOS-Community-Edition-RaspberryPi4b-1.3.0.166_ru.deb"
+          sudo dpkg -i kos-sdk.deb
           echo "KOS_SDK=/opt/kasperskyos-community-edition-1.3.0.166" >> $GITHUB_ENV
 
-      - name: Build with KOS
+      # Настройка окружения
+      - name: Setup environment
+        run: |
+          echo "$KOS_SDK/toolchain/bin" >> $GITHUB_PATH
+          echo "$KOS_SDK/bin" >> $GITHUB_PATH
+
+      # Патчинг CMakeLists.txt (если нужно)
+      - name: Patch CMakeLists.txt
+        run: |
+          sed -i 's/include(platform)/#include(platform)/' kos/CMakeLists.txt
+          sed -i 's/initialize_platform/#initialize_platform/' kos/CMakeLists.txt
+
+      # Сборка проекта
+      - name: Build project
         run: |
           mkdir -p kos/build
           cd kos/build
-          cmake -DCMAKE_TOOLCHAIN_FILE="$KOS_SDK/toolchain/share/toolchain-aarch64-kos.cmake" ..
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
           cmake --build .
 
+      # Генерация compile_commands.json
+      - name: Prepare SonarQube
+        run: |
+          cp kos/build/compile_commands.json .
+
+      # Анализ SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
