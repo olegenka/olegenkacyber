@@ -7,17 +7,40 @@ on:
 
 jobs:
   sonarqube:
+    name: SonarQube
     runs-on: ubuntu-latest
     steps:
+      # Шаг 1: Получение кода
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Verify KOS structure
+      # Шаг 2: Установка Build Wrapper
+      - name: Install Build Wrapper
+        run: |
+          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          unzip build-wrapper-linux-x86.zip
+          echo "$PWD/build-wrapper-linux-x86" >> $GITHUB_PATH
+
+      # Шаг 3: Проверка структуры проекта
+      - name: Verify KOS Structure
         run: |
           ls -la kos/
+          test -f kos/Makefile || exit 1
           find kos -name '*.cpp' -o -name '*.h'
 
+      # Шаг 4: Сборка с Build Wrapper
+      - name: Build KOS with Wrapper
+        run: |
+          build-wrapper-linux-x86-64 --out-dir bw_output make -C kos all
+
+      # Шаг 5: Проверка результатов сборки
+      - name: Validate Build Output
+        run: |
+          ls -la bw_output
+          test -f bw_output/build-wrapper-dump.json || exit 1
+
+      # Шаг 6: Анализ SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
