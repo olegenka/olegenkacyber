@@ -1,3 +1,5 @@
+.PHONY: all
+all: docker-image docs
 .PHONY: docker-compose-stop docs
 
 docs:
