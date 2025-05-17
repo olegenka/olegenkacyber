@@ -1,5 +1,13 @@
+name: SonarQube Analysis
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    
 jobs:
   sonarqube:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
