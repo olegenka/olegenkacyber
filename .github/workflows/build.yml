@@ -55,10 +55,14 @@ jobs:
 
       - name: Build project
         run: |
+          mkdir -p kos/cmake/platform  # Создаем папку для кастомных модулей
+          echo 'function(nk_build_idl_files)' > kos/cmake/platform/nk.cmake
+          echo 'endfunction()' >> kos/cmake/platform/nk.cmake
+
           mkdir -p kos/build
           cd kos/build
-          cmake -DCMAKE_TOOLCHAIN_FILE="$KOS_SDK/toolchain/share/toolchain-aarch64-kos.cmake" ..
-          cmake --build .
+          cmake -DCMAKE_MODULE_PATH="$GITHUB_WORKSPACE/kos/cmake" ..
+          cmake --build 
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
