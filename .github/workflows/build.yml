@@ -11,15 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Шаг 1: Патчинг CMakeLists.txt
-      - name: Patch CMake for Sonar
-        run: |
-          sed -i 's/include (platform)/#include (platform)/' kos/CMakeLists.txt
-          sed -i 's/initialize_platform/#initialize_platform/' kos/CMakeLists.txt
-
-      # Шаг 2: Установка CMake
-      - name: Install CMake
-        run: sudo apt-get update && sudo apt-get install -y cmake
+    
 
       # Шаг 3: Генерация compile_commands.json
       - name: Generate Compilation DB
