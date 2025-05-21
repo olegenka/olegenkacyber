@@ -10,6 +10,8 @@ from Cryptodome import Random
 from Cryptodome.PublicKey import RSA
 from models import *
 from utils.db_utils import *
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 
 
 ORVD_KEY_SIZE = 1024
@@ -574,3 +576,33 @@ def generate_forbidden_zones_string(forbidden_zones):
         coordinates = zone['geometry']['coordinates'][0]
         result_str += f'&{name}&{len(coordinates)}&{"&".join(list(map(lambda e: f"{e[1]:.7f}_{e[0]:.7f}", coordinates)))}'
     return result_str
+
+
+def secure_hash(message: str) -> str:
+    """
+    Creates a secure hash of the input message using Argon2.
+    
+    Args:
+        message (str): Входное сообщение для хеширования.
+    Returns:
+        str: Безопасный хеш входного сообщения.
+    """
+    ph = PasswordHasher()
+    return ph.hash(message)
+
+def verify_hash(message: str, hash: str) -> bool:
+    """
+    Verifies a message against its Argon2 hash.
+    
+    Args:
+        message (str): Сообщение для проверки.
+        hash (str): Хеш для сравнения.
+    Returns:
+        bool: True если хеш совпадает, False в противном случае.
+    """
+    ph = PasswordHasher()
+    try:
+        ph.verify(hash, message)
+        return True
+    except VerifyMismatchError:
+        return False
