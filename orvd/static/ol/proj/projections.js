@@ -22,7 +22,7 @@ export function clear() {
 export function get(code) {
   return (
     cache[code] ||
-    cache[code.replace(/urn:(x-)?ogc:def:crs:EPSG:(.*:)?(\w+)$/, 'EPSG:$3')] ||
+    cache[code.replace(/^urn:(?:x-)?ogc:def:crs:EPSG:(?:.*?)?(\w+)$/, 'EPSG:$1')] ||
     null
   );
 }
