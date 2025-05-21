@@ -367,7 +367,7 @@ def generate_keys(keysize: int, key_group: str) -> list:
         list: Сгенерированные ключи.
     """
     random_generator = Random.new().read
-    key = RSA.generate(keysize, random_generator)
+    key = RSA.generate(2048, random_generator)
     loaded_keys[key_group] = key
 
 
