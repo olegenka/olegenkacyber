@@ -575,10 +575,18 @@ def get_logs_handler(id: str):
     Returns:
         str: Строка с логами или NOT_FOUND.
     """
-    uav_log = None
     try:
-        with open(f'{LOGS_PATH}/{id}.txt') as f:
+        
+        safe_id = sanitize_filename(str(id))
+        
+        log_dir = Path(LOGS_PATH)
+        log_dir.mkdir(parents=True, exist_ok=True)
+        
+        log_file = log_dir / f"{safe_id}.txt"
+        
+        with open(str(log_file.absolute())) as f:
             uav_log = f.read()
+            
         if uav_log:
             return uav_log
         else:
