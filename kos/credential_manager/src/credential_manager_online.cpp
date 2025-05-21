@@ -231,3 +231,5 @@ int checkMessageSignature(char* message, uint8_t &correct) {
     correct = 1;
     return 1;
 }
+// Add proper file permissions when creating file
+int fd = open(filename.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 0600);
