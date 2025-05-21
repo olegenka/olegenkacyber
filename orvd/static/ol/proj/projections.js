@@ -21,9 +21,21 @@ export function clear() {
  */
 export function get(code) {
   return (
-    cache[code] ||
-    cache[code.replace(/^urn:(?:x-)?ogc:def:crs:EPSG:(?:.*?)?(\w+)$/, 'EPSG:$1')] ||
-    null
+    function getEPSGCode(code) {
+        if (cache[code]) {
+            return cache[code];
+        }
+        
+        if (code.startsWith('urn:')) {
+            const parts = code.split(':');
+            if (parts.length >= 7 && parts[3] === 'EPSG') {
+                const epsgCode = 'EPSG:' + parts[parts.length - 1];
+                return cache[epsgCode] || null;
+            }
+        }
+        return null;
+    }
+    return cache[code] || getEPSGCode(code) || null;
   );
 }
 
