@@ -52,8 +52,7 @@ def get_sha256_hex(message: str) -> str:
     Returns:
         str: Хеш SHA-256 входного сообщения в виде шестнадцатеричной строки, без префикса '0x'.
     """
-    return hex(int.from_bytes(sha256(message.encode()).digest(), byteorder='big', signed=False))[2:]
-
+    return secure_hash(message)
 
 def parse_mission(mission: str) -> list:
     """
