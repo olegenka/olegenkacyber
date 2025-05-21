@@ -272,7 +272,7 @@ def sign(message: str, key_group: str) -> int:
     key = get_key(key_group, private=True)
     n, d = key.n, key.d
     msg_bytes = message.encode()
-    hash = int.from_bytes(sha256(msg_bytes).digest(), byteorder='big', signed=False)
+    hash_value = secure_hash(message)
     signature = pow(hash, d, n)
     
     return signature
