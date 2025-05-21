@@ -587,6 +587,20 @@ def get_logs_handler(id: str):
         return NOT_FOUND
 
 
+def sanitize_filename(filename):
+    """
+    Sanitizes the filename to prevent path traversal attacks.
+    Only allows alphanumeric characters and some safe symbols.
+    """
+    # Удалить все компоненты каталога
+    filename = os.path.basename(filename)
+    
+    # Разрешены только буквенно-цифровые символы, тире и подчеркивание
+    safe_chars = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_")
+    filename = ''.join(c for c in filename if c in safe_chars)
+    
+    return filename or 'default'
+
 def save_logs_handler(id: str, log: str):
     """
     Обрабатывает запрос на сохранение логов БПЛА.
@@ -599,9 +613,19 @@ def save_logs_handler(id: str, log: str):
         str: OK в случае успешного сохранения.
     """
     try:
-        if not os.path.exists(LOGS_PATH):
-            os.makedirs(LOGS_PATH)
-        with open(f'{LOGS_PATH}/{id}.txt', 'a') as f:
+        # Очиcтка идентификатора перед использованием его в path
+        safe_id = sanitize_filename(str(id))
+        
+        # Создание каталога журналов, если он не существует.
+        log_dir = Path(LOGS_PATH)
+        log_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Безопасное соединение путей
+        log_file = log_dir / f"{safe_id}.txt"
+        
+        # Безопасное открытие файла с указанием абсолютного пути
+        with open(str(log_file.absolute()), 'a') as f:
+        
             f.write(f'\n{log}')
     except Exception as e:
         print(e)
