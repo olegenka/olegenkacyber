@@ -1,71 +1,19 @@
-name: SonarQube Analysis
+name: Build
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
-
 jobs:
   sonarqube:
-    runs-on: ubuntu-22.04
+    name: SonarQube
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            curl \
-            build-essential \
-            gcc-aarch64-linux-gnu \
-            g++-aarch64-linux-gnu \
-            binutils-aarch64-linux-gnu \
-            make \
-            libncurses5 \
-            libpulse0 \
-            libtinfo5 \
-            socat \
-            device-tree-compiler \
-            libsdl2-2.0-0 \
-            doxygen \
-            mtools \
-            u-boot-tools
-
-      - name: Install latest CMake
-        run: |
-          sudo apt-get remove -y cmake
-          sudo snap install cmake --classic
-          echo "/snap/bin" >> $GITHUB_PATH
-
-      - name: Download KOS SDK
-        run: |
-          curl -fsSL -o kos-sdk.deb "https://github.com/olegenkaorg/olegenkacyber/releases/download/v1.0/KasperskyOS-Community-Edition-RaspberryPi4b-1.3.0.166_ru.deb"
-
-      - name: Install KOS SDK
-        run: |
-          sudo dpkg -i kos-sdk.deb || sudo apt-get install -f -y
-          KOS_PATH=$(find /opt -name "toolchain-aarch64-kos.cmake" | head -1 | xargs dirname | xargs dirname | xargs dirname)
-          echo "KOS_SDK=$KOS_PATH" >> $GITHUB_ENV
-
-      - name: Verify SDK installation
-        run: |
-          echo "SDK path: $KOS_SDK"
-          find "$KOS_SDK" -name "toolchain-aarch64-kos.cmake"
-          test -f "$KOS_SDK/toolchain/share/toolchain-aarch64-kos.cmake" || exit 1
-
-      - name: Build project
-        run: |
-          mkdir -p kos/cmake/platform  # Создаем папку для кастомных модулей
-          echo 'function(nk_build_idl_files)' > kos/cmake/platform/nk.cmake
-          echo 'endfunction()' >> kos/cmake/platform/nk.cmake
-          mkdir -p kos/build
-          cd kos/build
-          cmake -DCMAKE_MODULE_PATH="$GITHUB_WORKSPACE/kos/cmake" ..
-          cmake --build 
-          
-
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_CXX_COMPILE_COMMANDS: kos/build/compile_commands.json
