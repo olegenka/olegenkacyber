@@ -578,31 +578,38 @@ def generate_forbidden_zones_string(forbidden_zones):
     return result_str
 
 
+
 def secure_hash(message: str) -> str:
     """
-    Creates a secure hash of the input message using Argon2.
+    Creates a secure hash using Argon2 password hashing algorithm.
     
     Args:
-        message (str): Входное сообщение для хеширования.
+        message (str): Input message to hash.
     Returns:
-        str: Безопасный хеш входного сообщения.
+        str: Secure Argon2 hash of the input message.
     """
-    ph = PasswordHasher()
+    ph = PasswordHasher(
+        time_cost=2,        # Number of iterations
+        memory_cost=102400, # 100MB memory usage
+        parallelism=8,      # Number of parallel threads
+        hash_len=32,        # Length of the hash in bytes
+        salt_len=16         # Length of the salt in bytes
+    )
     return ph.hash(message)
 
-def verify_hash(message: str, hash: str) -> bool:
+def verify_hash(message: str, hash_value: str) -> bool:
     """
     Verifies a message against its Argon2 hash.
     
     Args:
-        message (str): Сообщение для проверки.
-        hash (str): Хеш для сравнения.
+        message (str): Message to verify
+        hash_value (str): Hash to verify against
     Returns:
-        bool: True если хеш совпадает, False в противном случае.
+        bool: True if hash matches, False otherwise
     """
     ph = PasswordHasher()
     try:
-        ph.verify(hash, message)
+        ph.verify(hash_value, message)
         return True
     except VerifyMismatchError:
         return False
